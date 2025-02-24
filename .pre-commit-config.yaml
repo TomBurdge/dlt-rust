@@ -1,0 +1,51 @@
+default_install_hook_types:
+  - pre-commit
+  - commit-msg
+
+repos:
+- repo: https://github.com/astral-sh/ruff-pre-commit
+  rev: v0.9.6
+  hooks:
+    - id: ruff
+      args: [ --fix ]
+    - id: ruff-format
+-   repo: https://github.com/doublify/pre-commit-rust
+    rev: v1.0
+    hooks:
+    -   id: fmt
+    -   id: cargo-check
+    -   id: clippy
+- repo: local
+  hooks:
+    # - id: mypy
+    #   name: mypy
+    #   entry: uv run mypy
+    #   files: ^(src)/
+    #   language: system
+    #   types: [python]
+    #   require_serial: true
+    # - id: pytest
+    #   name: pytest
+    #   entry: uv run pytest
+    #   files: ^(src)/
+    #   language: system
+    #   types: [python]
+    #   pass_filenames: false
+    - id: export
+      name: uv export
+      entry: uv export -o requirements.txt --no-hashes
+      files: pyproject.toml|uv.lock|requirements.txt
+      language: system
+      pass_filenames: false
+    - id: exportdev
+      name: uv export dev
+      entry: uv export -o dev-requirements.txt --no-hashes --only-dev
+      language: system
+      files: pyproject.toml|uv.lock|dev-requirements.txt
+      pass_filenames: false
+- repo: https://github.com/compilerla/conventional-pre-commit
+  rev: v4.0.0
+  hooks:
+    - id: conventional-pre-commit
+      stages: [commit-msg]
+      args: []

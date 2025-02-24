@@ -1,0 +1,29 @@
+[project]
+name = "dlt-rust"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Tom", email = "tomburdge3@gmail.com" }
+]
+requires-python = ">=3.11"
+dependencies = [
+    "dlt>=1.7.0",
+]
+
+[project.scripts]
+dlt-rust = "dlt_rust:main"
+
+[tool.maturin]
+module-name = "dlt_rust._core"
+python-packages = ["dlt_rust"]
+python-source = "src"
+
+[build-system]
+requires = ["maturin>=1.0,<2.0"]
+build-backend = "maturin"
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.1.0",
+]
