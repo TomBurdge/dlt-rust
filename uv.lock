@@ -244,22 +244,22 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "dlt", extra = ["duckdb", "parquet"] },
-    { name = "maturin", extra = ["patchelf"] },
 ]
 
 [package.dev-dependencies]
 dev = [
+    { name = "maturin", extra = ["patchelf"] },
     { name = "pre-commit" },
 ]
 
 [package.metadata]
-requires-dist = [
-    { name = "dlt", extras = ["duckdb", "parquet"], specifier = ">=1.7.0" },
-    { name = "maturin", extras = ["patchelf"], specifier = ">=1.8.2" },
-]
+requires-dist = [{ name = "dlt", extras = ["duckdb", "parquet"], specifier = ">=1.7.0" }]
 
 [package.metadata.requires-dev]
-dev = [{ name = "pre-commit", specifier = ">=4.1.0" }]
+dev = [
+    { name = "maturin", extras = ["patchelf"], specifier = ">=1.8.2" },
+    { name = "pre-commit", specifier = ">=4.1.0" },
+]
 
 [[package]]
 name = "duckdb"
