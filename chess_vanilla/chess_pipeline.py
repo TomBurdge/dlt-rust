@@ -18,7 +18,7 @@ def load_players_games_example(start_month: str, end_month: str) -> None:
         end_month=end_month,
     )
     # load the "players_games" and "players_profiles" out of all the possible resources
-    info = pipeline.run(data.with_resources("players_games", "players_profiles"))
+    info = pipeline.run(data.with_resources("players_profiles"))
     print(info)
 
 
