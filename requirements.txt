@@ -25,6 +25,7 @@ makefun==1.15.6
 markdown-it-py==3.0.0
 mdurl==0.1.2
 nodeenv==1.9.1
+numpy==2.2.3 ; python_full_version < '3.13'
 orjson==3.10.15 ; platform_python_implementation != 'PyPy'
 packaging==24.2
 pathvalidate==3.2.3
@@ -33,6 +34,8 @@ platformdirs==4.3.6
 pluggy==1.5.0
 ply==3.11
 pre-commit==4.1.0
+pyarrow==17.0.0 ; python_full_version < '3.13'
+pyarrow==19.0.1 ; python_full_version >= '3.13'
 pycparser==2.22 ; python_full_version >= '3.13'
 pygments==2.19.1
 python-dateutil==2.9.0.post0
