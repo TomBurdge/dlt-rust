@@ -1,13 +1,9 @@
-from dlt_rust._core import hello_from_bin
+from dlt_rust._core import get_player_profiles
 import dlt
 from typing import List, Sequence
 from dlt.sources import DltResource
 import pyarrow as pa
 from typing import Optional
-
-
-def main() -> None:
-    print(hello_from_bin())
 
 
 @dlt.source(name="chess")
@@ -38,18 +34,8 @@ def source(
 
 @dlt.resource(write_disposition="replace")
 def players_profiles(players: List[str]) -> pa.Table:
-    """
-    Yields player profiles for a list of player usernames.
-    Args:
-        players (List[str]): List of player usernames to retrieve profiles for.
-    Yields:
-        Iterator[TDataItem]: An iterator over player profiles data.
-    """
-
-    def usernames(players: List[str]) -> pa.Table:
-        raise NotImplementedError("Rust function not yet written!")
-
-    yield usernames(players=players)
+    res = get_player_profiles(players=players)
+    yield res
 
 
 @dlt.resource(write_disposition="append")
@@ -66,3 +52,24 @@ def players_games(
         raise NotImplementedError("Rust function not yet written!")
 
     yield games(players=players, start_month=start_month, end_month=end_month)
+
+
+def load_players_games_example(start_month: str, end_month: str) -> None:
+    """Constructs a pipeline that will load chess games of specific players for a range of months."""
+
+    # configure the pipeline: provide the destination and dataset name to which the data should go
+    pipeline = dlt.pipeline(
+        pipeline_name="chess_pipeline_rs",
+        destination="duckdb",
+        dataset_name="chess_players_games_data",
+    )
+    # create the data source by providing a list of players and start/end month in YYYY/MM format
+    data = source(
+        ["magnuscarlsen", "vincentkeymer", "dommarajugukesh", "rpragchess"]  # ,
+        # start_month=start_month,
+        # end_month=end_month,
+    )
+    # load the "players_games" and "players_profiles" out of all the possible resources
+    # info = pipeline.run(data.with_resources("players_games", "players_profiles"))
+    info = pipeline.run(data.with_resources("players_profiles"))
+    print(info)
