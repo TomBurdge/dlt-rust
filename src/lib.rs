@@ -89,6 +89,7 @@ impl TryFrom<PlayerPayloads> for RecordBatch {
     }
 }
 
+// TODO: change to try from string for PlayerPayload
 fn get_player_profile(username: String) -> PyResult<PlayerPayload> {
     let path = format!("player/{}", username);
     let url = format!("{}{}", OFFICIAL_CHESS_API_URL, path);
