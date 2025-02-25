@@ -9,6 +9,7 @@ authors = [
 requires-python = ">=3.11"
 dependencies = [
     "dlt[duckdb,parquet]>=1.7.0",
+    "maturin[patchelf]>=1.8.2",
 ]
 
 [project.scripts]

@@ -23,11 +23,13 @@ idna==3.10
 jsonpath-ng==1.7.0
 makefun==1.15.6
 markdown-it-py==3.0.0
+maturin==1.8.2
 mdurl==0.1.2
 nodeenv==1.9.1
 numpy==2.2.3 ; python_full_version < '3.13'
 orjson==3.10.15 ; platform_python_implementation != 'PyPy'
 packaging==24.2
+patchelf==0.17.2.1
 pathvalidate==3.2.3
 pendulum==3.0.0 ; python_full_version < '3.13'
 platformdirs==4.3.6
