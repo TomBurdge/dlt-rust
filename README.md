@@ -2,17 +2,18 @@
 Ingest data from an API with Data Load Tool (DLT) via a rust pyo3 plugin.
 
 # Ingestion
-Data ingestion the component of data engineering which involves receiving data from an outside source, and loading the data within one's own environment.<br>
+Data ingestion the component of data engineering which involves receiving data from an outside source, and loading the data within one's own environment.<br><br>
 Common use cases for ingestion, in my experience in an enterprise setting, are threefold:
 1. Ingestion of data from a data suppplier outside one's own organisation.
 2. Ingestion of data from an upstream team or environment in the data lifecycle.
 3. Migration of data between platforms or less commonly environments (dev/prod).
-
+<br><br>
+# Sources of Complexity
 This definition of ingestion shows the complexity of ingestion through three ways:
-1. *Complexity of sources:* One's environment (ingestion destination) is likely to be significantly different from diverse ingestion sources. Upstream data could be in diverse forms, including but not limited to: APIs, diverse flat files (excel, parquet, .wav), databases, and message streams. These data sources can all exist with complex varieties of latency and schemas.
-2. *Complexity of destinations:* One's own file destination should be more consistent; in a data engineering team it is industry best practice to store data in an open table format (delta/iceberg) in cloud file storage. Data catalogs, which are effectively the previous pattern with more built-in metadata capabilities, are becoming more common but not universal. Nonetheless, different teams can work with: different clouds, different networking security, and different data models. Through diversity, there remains complexity.
-2. *Complexity of teams*: Technical components are important, but team structures are often the most important component of complexity. In any organisation of reasonable size and geographic dispersal, ingestion between sources and destinations remains increasingly complex. Team/communication interfaces that result in complexity, for ingestion, includes: communication surrounding source/destination authentication, complexity surrounding source availability, and complexity surrounding source data quality resolution.
-
+1. **Complexity of sources:** One's environment (ingestion destination) is likely to be significantly different from diverse ingestion sources. Upstream data could be in diverse forms, including but not limited to: APIs, diverse flat files (excel, parquet, .wav), databases, and message streams. These data sources can all exist with complex varieties of latency and schemas.
+2. **Complexity of destinations:** One's own file destination should be more consistent; in a data engineering team it is industry best practice to store data in an open table format (delta/iceberg) in cloud file storage. Data catalogs, which are effectively the previous pattern with more built-in metadata capabilities, are becoming more common but not universal. Nonetheless, different teams can work with: different clouds, different networking security, and different data models. Through diversity, there remains complexity.
+2. **Complexity of teams**: Technical components are important, but team structures are often the most important component of complexity. In any organisation of reasonable size and geographic dispersal, ingestion between sources and destinations remains increasingly complex. Team/communication interfaces that result in complexity, for ingestion, includes: communication surrounding source/destination authentication, complexity surrounding source availability, and complexity surrounding source data quality resolution.
+<br><br>
 Data ingestion can sound simple: move data from one place to another. However, the above components result in complex patterns; include, with this, a high number of diverse data sources, and data ingestion becomes a hard problem in need of common patterns for simplification.
 
 
