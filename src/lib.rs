@@ -5,6 +5,7 @@ use pyo3::wrap_pyfunction;
 use pyo3::Bound;
 use pyo3::PyResult;
 
+pub mod games;
 pub mod ingestors;
 pub mod records;
 
