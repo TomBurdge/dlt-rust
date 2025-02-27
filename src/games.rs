@@ -1,8 +1,7 @@
 use pyo3::exceptions::PyValueError;
 use pyo3::PyResult;
 
-#[allow(dead_code)]
-fn validate_month_string(string: String) -> PyResult<()> {
+pub fn validate_month_string(string: &str) -> PyResult<()> {
     let char_4 = string.chars().nth(4).ok_or_else(|| {
         PyValueError::new_err(format!(
             "Input date string {} was not long enough to be a valid date.",
