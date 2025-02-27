@@ -11,6 +11,7 @@ use super::records;
 #[pyfunction]
 pub fn get_player_profiles(players: Vec<String>) -> PyResult<PyArrowType<RecordBatch>> {
     let mut results = records::PlayerPayloads::new();
+    // TODO: move the client into a pyclass and arguent
     let client = Client::builder()
         .build()
         .map_err(|error| PyValueError::new_err(format!("Could not build client: {}", error)))?;
