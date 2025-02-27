@@ -93,13 +93,9 @@ impl TryFrom<PlayerPayloads> for RecordBatch {
 }
 
 // TODO: change to try from string for PlayerPayload
-pub fn get_player_profile(username: String) -> PyResult<PlayerPayload> {
+pub fn get_player_profile(client: &Client, username: String) -> PyResult<PlayerPayload> {
     let path = format!("player/{}", username);
     let url = format!("{}{}", super::OFFICIAL_CHESS_API_URL, path);
-    let client = Client::builder()
-        // .cookie_store(true)
-        .build()
-        .map_err(|error| PyValueError::new_err(format!("Could not build a client: {}", error)))?;
     let res = client
         .get(url)
         .header(
