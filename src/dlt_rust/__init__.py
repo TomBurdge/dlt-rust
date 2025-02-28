@@ -1,4 +1,4 @@
-from dlt_rust._core import get_player_profiles
+from dlt_rust._core import get_player_profiles, PyClient
 import dlt
 from typing import List, Sequence
 from dlt.sources import DltResource
@@ -8,7 +8,7 @@ from typing import Optional
 
 @dlt.source(name="chess")
 def source(
-    players: List[str], start_month: str = None, end_month: str = None
+    client: PyClient, players: List[str], start_month: str = None, end_month: str = None
 ) -> Sequence[DltResource]:
     """
     A dlt source for the chess.com api. It groups several resources (in this case chess.com API endpoints) containing
@@ -22,7 +22,7 @@ def source(
         players_archives, players_games, players_online_status
     """
     return (
-        players_profiles(players),
+        players_profiles(client=client, players=players),
         # players_archives(p\layers),
         players_games(players, start_month=start_month, end_month=end_month),
         # players_online_status(players),
@@ -33,8 +33,8 @@ def source(
 
 
 @dlt.resource(write_disposition="replace")
-def players_profiles(players: List[str]) -> pa.Table:
-    res = get_player_profiles(players=players)
+def players_profiles(client: PyClient, players: List[str]) -> pa.Table:
+    res = get_player_profiles(client=client, players=players)
     yield res
 
 
@@ -64,8 +64,15 @@ def load_players_games_example(start_month: str, end_month: str) -> None:
         dataset_name="chess_players_games_data",
     )
     # create the data source by providing a list of players and start/end month in YYYY/MM format
+    client = PyClient()
     data = source(
-        ["magnuscarlsen", "vincentkeymer", "dommarajugukesh", "rpragchess"]  # ,
+        client=client,
+        players=[
+            "magnuscarlsen",
+            "vincentkeymer",
+            "dommarajugukesh",
+            "rpragchess",
+        ],  # ,
         # start_month=start_month,
         # end_month=end_month,
     )

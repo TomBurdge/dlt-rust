@@ -4,10 +4,10 @@ use arrow_schema::{DataType, Field, Schema};
 use pyo3::exceptions::PyException;
 use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
-use reqwest::blocking::Client;
-use reqwest::header::{ACCEPT, ACCEPT_LANGUAGE, USER_AGENT};
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
+
+use super::client::PyClient;
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct PlayerPayload {
@@ -92,24 +92,10 @@ impl TryFrom<PlayerPayloads> for RecordBatch {
     }
 }
 
-pub fn get_player_profile(client: &Client, username: String) -> PyResult<PlayerPayload> {
+pub fn get_player_profile(client: &PyClient, username: String) -> PyResult<PlayerPayload> {
     let path = format!("player/{}", username);
     let url = format!("{}{}", super::OFFICIAL_CHESS_API_URL, path);
-    let res = client
-        .get(url)
-        .header(
-            USER_AGENT,
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:94.0) Gecko/20100101 Firefox/94.0",
-        )
-        .header(
-            ACCEPT,
-            "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        )
-        .header(ACCEPT_LANGUAGE, "en-US,en;q=0.5")
-        .send()
-        .map_err(|error| PyValueError::new_err(format!("Error performing request: {}", error)))?
-        .text()
-        .expect("body failed");
+    let res = client.get_url(&url)?;
     let payload = serde_json::from_str::<PlayerPayload>(&res).map_err(|error| {
         PyValueError::new_err(format!("Error in parsing the payload {}", error))
     })?;
