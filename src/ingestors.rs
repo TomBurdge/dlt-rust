@@ -13,7 +13,6 @@ pub fn get_player_profiles(
     players: Vec<String>,
 ) -> PyResult<PyArrowType<RecordBatch>> {
     let mut results = records::PlayerPayloads::new();
-    // TODO: move the client into a pyclass and arguent
     for player in players {
         let player = records::get_player_profile(client, player)?;
         results.push_payload(player);
