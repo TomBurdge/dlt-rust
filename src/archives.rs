@@ -12,8 +12,8 @@ pub struct PlayerArchives {
 impl PlayerArchives {
     fn filter_months(
         self,
-        start_month: DateTimeUtc,
-        end_month: DateTimeUtc,
+        start_month: &DateTimeUtc,
+        end_month: &DateTimeUtc,
     ) -> PyResult<PlayerArchives> {
         let archives = self
             .archives
@@ -63,7 +63,7 @@ impl PlayersArchives {
     }
 
     fn add_player_archive(&mut self, player: PlayerArchives) -> PyResult<()> {
-        let player = player.filter_months(self.start_month.clone(), self.end_month.clone())?;
+        let player = player.filter_months(&self.start_month, &self.end_month)?;
         self.players.push(player);
         Ok(())
     }
