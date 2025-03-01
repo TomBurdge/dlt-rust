@@ -13,12 +13,12 @@ The code is well written, with built in and easy to use implementations for [asy
 
 Although python is the industry-standard language of choice for many data engineering use cases, it often provides best performance when used as a wrapper for faster languages.<br>
 DLT's python-native parallelism/concurrency will still be limited by Global Interpreter Lock (the GIL).<br>
-Defining the GIL in detail is beyond the scope of this README, but in short it is "a mutex (or a lock) that allows only one thread to hold the control of the Python interpreter."[[1]](](https://realpython.com/python-gil/))<br>
+Defining the GIL in detail is beyond the scope of this README, but in short it is "a mutex (or a lock) that allows only one thread to hold the control of the Python interpreter."[*](](https://realpython.com/python-gil/))<br>
 The GIL is part of what makes python an accessible language, where users do not have to consider components of memory management that exist in other languages.<br>
 With this comes trade-offs; the GIL limits [significantly limits the the performance gains](https://realpython.com/python-gil/#the-impact-on-multi-threaded-python-programs) that can result from multi-threaded python-native code.<br><br>
 
 Rust is a system levels language, which gives the user significantly greater control over memory management.<br>
-Partially as a result of this greater control: "fearless concurrency"[[2]](https://doc.rust-lang.org/book/ch16-00-concurrency.html) and [user-brought async runtimes](https://doc.rust-lang.org/book/ch17-00-async-await.html).
+Partially as a result of this greater control: "fearless concurrency"[*](https://doc.rust-lang.org/book/ch16-00-concurrency.html) and [user-brought async runtimes](https://doc.rust-lang.org/book/ch17-00-async-await.html).
 
 Components of ingestion benefit from asynchronicity: a common data ingestion use-case involves multiple calls to a single API endpoint with different headers.<br>
 Making these calls at the same time/within quick succession, while cohering to an endpoint's rate limits, offers performance benefits.<br><br>
