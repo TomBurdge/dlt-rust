@@ -6,11 +6,12 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct PlayerArchives {
-    archives: Vec<String>,
+    pub archives: Vec<String>,
 }
 
+#[derive(Debug)]
 pub struct PlayersArchives {
-    players: Vec<PlayerArchives>,
+    pub players: Vec<PlayerArchives>,
     // schema: Schema
 }
 
@@ -33,7 +34,6 @@ impl PlayersArchives {
 pub fn get_player_archives(client: &PyClient, players: Vec<String>) -> PyResult<PlayersArchives> {
     let mut archives = PlayersArchives::new();
     for player in players {
-        // https://api.chess.com/pub/player/magnuscarlesn/games/archives
         let path = format!("player/{}/games/archives", player);
         let url = format!("{}{}", super::OFFICIAL_CHESS_API_URL, path);
         let res = client.get_url(&url)?;

@@ -1,4 +1,4 @@
-from dlt_rust._core import get_player_profiles, PyClient
+from dlt_rust._core import get_player_profiles, PyClient, get_player_games
 import dlt
 from typing import List, Sequence
 from dlt.sources import DltResource
@@ -24,7 +24,9 @@ def source(
     return (
         players_profiles(client=client, players=players),
         # players_archives(p\layers),
-        players_games(players, start_month=start_month, end_month=end_month),
+        players_games(
+            client=client, players=players, start_month=start_month, end_month=end_month
+        ),
         # players_online_status(players),
     )
 
@@ -40,18 +42,17 @@ def players_profiles(client: PyClient, players: List[str]) -> pa.Table:
 
 @dlt.resource(write_disposition="append")
 def players_games(
+    client: PyClient,
     players: List[str],
     start_month: Optional[str] = None,
     end_month: Optional[str] = None,
 ) -> pa.Table:
-    def games(
-        players: List[str],
-        start_month: Optional[str] = None,
-        end_month: Optional[str] = None,
-    ) -> pa.Table:
-        raise NotImplementedError("Rust function not yet written!")
+    get_player_games(
+        client=client, players=players, start_month=start_month, end_month=end_month
+    )
+    raise NotImplementedError("Rust function is in progress!")
 
-    yield games(players=players, start_month=start_month, end_month=end_month)
+    # yield games(players=players, start_month=start_month, end_month=end_month)
 
 
 def load_players_games_example(start_month: str, end_month: str) -> None:
@@ -72,11 +73,11 @@ def load_players_games_example(start_month: str, end_month: str) -> None:
             "vincentkeymer",
             "dommarajugukesh",
             "rpragchess",
-        ],  # ,
-        # start_month=start_month,
-        # end_month=end_month,
+        ],
+        start_month=start_month,
+        end_month=end_month,
     )
     # load the "players_games" and "players_profiles" out of all the possible resources
     # info = pipeline.run(data.with_resources("players_games", "players_profiles"))
-    info = pipeline.run(data.with_resources("players_profiles"))
+    info = pipeline.run(data.with_resources("players_games"))
     print(info)

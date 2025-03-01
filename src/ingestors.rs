@@ -23,7 +23,7 @@ pub fn get_player_profiles(
 }
 
 #[pyfunction]
-pub fn get_games(
+pub fn get_player_games(
     client: &PyClient,
     players: Vec<String>,
     start_month: String,
@@ -32,5 +32,17 @@ pub fn get_games(
     games::validate_month_string(&start_month)?;
     games::validate_month_string(&end_month)?;
     let _archives = archives::get_player_archives(client, players)?;
+    // println!(
+    //     "{}",
+    //     archives
+    //         .players
+    //         .into_iter()
+    //         .nth(0)
+    //         .unwrap()
+    //         .archives
+    //         .into_iter()
+    //         .nth(0)
+    //         .unwrap()
+    // );
     Ok(())
 }
