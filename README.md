@@ -32,7 +32,7 @@ DLT offers what it calls ["schema and data contracts"](https://dlthub.com/docs/g
 These forms of checks are opt-in, via [Pydantic](https://github.com/pydantic/pydantic) or custom validation.<br>Particularly with API ingestion, one should not expect the schema to change without warning. Strict-by-design, with rust's excellent serialization/de-serialization support through [serde](https://docs.rs/serde/latest/serde/), can be a worthy approach.
 
 # 3 Rust Plugin
-DLT offers "plugins"; custom ingestion [sources](https://dlthub.com/docs/dlt-ecosystem/verified-sources/) and [destinations](https://dlthub.com/docs/dlt-ecosystem/destinations/) which extend or replace DLT's existing in-built features.<br><br>
+DLT offers plugins; custom ingestion [sources](https://dlthub.com/docs/dlt-ecosystem/verified-sources/) and [destinations](https://dlthub.com/docs/dlt-ecosystem/destinations/) which extend or replace DLT's existing in-built features.<br><br>
 Through pyo3, I have written a custom source in rust. This rust is a [re-implementation](http://rewriteitinrust.studiosi.es/img/rewrite_in_rust_1.jpg) of the [chess.com verified DLT source](https://dlthub.com/docs/dlt-ecosystem/verified-sources/chess).<br><br>
 Through this, we can compare performance and features.
 
