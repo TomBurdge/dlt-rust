@@ -30,7 +30,7 @@ impl PlayersArchives {
     }
 }
 
-pub fn get_player_archives(client: PyClient, players: Vec<String>) -> PyResult<PlayersArchives> {
+pub fn get_player_archives(client: &PyClient, players: Vec<String>) -> PyResult<PlayersArchives> {
     let mut archives = PlayersArchives::new();
     for player in players {
         // https://api.chess.com/pub/player/magnuscarlesn/games/archives

@@ -3,6 +3,7 @@ use arrow::pyarrow::PyArrowType;
 use pyo3::prelude::*;
 use pyo3::pyfunction;
 
+use super::archives;
 use super::client::PyClient;
 use super::games;
 use super::records;
@@ -22,8 +23,14 @@ pub fn get_player_profiles(
 }
 
 #[pyfunction]
-pub fn get_games(_players: Vec<String>, start_month: String, end_month: String) -> PyResult<()> {
+pub fn get_games(
+    client: &PyClient,
+    players: Vec<String>,
+    start_month: String,
+    end_month: String,
+) -> PyResult<()> {
     games::validate_month_string(&start_month)?;
     games::validate_month_string(&end_month)?;
+    let _archives = archives::get_player_archives(client, players)?;
     Ok(())
 }
