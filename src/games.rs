@@ -8,9 +8,9 @@ pub fn validate_month_string(string: &str) -> PyResult<()> {
             string
         ))
     })?;
-    if char_4 == '/' {
+    if char_4 != '/' {
         return Err(PyValueError::new_err(
-            "Fourth char of date string input was '/'. This is not a validate format.",
+            "Fourth char of date string input was not '/'. This is not a validate format.",
         ));
     }
     Ok(())
