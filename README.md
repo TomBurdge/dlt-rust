@@ -1,16 +1,13 @@
 # dlt-rust
 Ingest data from an API with Data Load Tool (DLT) via a rust pyo3 plugin.
 
-# 1 Context
-[Delta Load Tool](https://github.com/dlt-hub/dlt) (DLT) is an open source python library, which simplified data loading/ingestion for many sources.<br><br>
+# 1 Concepts
+[Delta Load Tool](https://github.com/dlt-hub/dlt) (DLT) is an open source python library, which simplified data loading/ingestion for many sources. DLT is almost entirely written in python. The code is well written, with built in and easy to use implementations for [asynchronous and parallel execution](https://dlthub.com/docs/reference/performance/#parallelism-within-a-pipeline).<br><br>
 
 [Pyo3](https://github.com/PyO3/pyo3) is an open source crate which provides python bindings for rust.<br><br>
 
 
 # 2 Motivation
-DLT is almost entirely written in python.<br>
-The code is well written, with built in and easy to use implementations for [asynchronous and parallel execution](https://dlthub.com/docs/reference/performance/#parallelism-within-a-pipeline).<br>
-
 Although python is the industry-standard language of choice for many data engineering use cases, it often provides best performance when used as a wrapper for faster languages.
 DLT's python-native parallelism/concurrency will still be limited by Global Interpreter Lock (the GIL).<br><br>
 Defining the GIL in detail is beyond the scope of this README, but in short it is "a mutex (or a lock) that allows only one thread to hold the control of the Python interpreter." [*](](https://realpython.com/python-gil/))<br><br>
