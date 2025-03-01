@@ -29,20 +29,20 @@ pub fn get_player_games(
     start_month: String,
     end_month: String,
 ) -> PyResult<()> {
-    games::validate_month_string(&start_month)?;
-    games::validate_month_string(&end_month)?;
-    let _archives = archives::get_player_archives(client, players)?;
-    // println!(
-    //     "{}",
-    //     archives
-    //         .players
-    //         .into_iter()
-    //         .nth(0)
-    //         .unwrap()
-    //         .archives
-    //         .into_iter()
-    //         .nth(0)
-    //         .unwrap()
-    // );
+    let start_month = games::month_string_to_date(&start_month)?;
+    let end_month = games::month_string_to_date(&end_month)?;
+    let archives = archives::get_player_archives(client, players, start_month, end_month)?;
+    println!(
+        "{}",
+        archives
+            .players
+            .into_iter()
+            .next()
+            .unwrap()
+            .archives
+            .into_iter()
+            .next()
+            .unwrap()
+    );
     Ok(())
 }

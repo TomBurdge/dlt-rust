@@ -1,8 +1,8 @@
 use crate::client::PyClient;
+use dateparser::DateTimeUtc;
 use pyo3::exceptions::PyValueError;
 use pyo3::PyResult;
 use serde::{Deserialize, Serialize};
-// use arrow_schema::{Field, Schema, DataType};
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct PlayerArchives {
@@ -12,22 +12,19 @@ pub struct PlayerArchives {
 #[derive(Debug)]
 pub struct PlayersArchives {
     pub players: Vec<PlayerArchives>,
-    // schema: Schema
-}
-
-impl Default for PlayersArchives {
-    fn default() -> Self {
-        PlayersArchives::new()
-    }
+    #[allow(dead_code)]
+    start_month: DateTimeUtc,
+    #[allow(dead_code)]
+    end_month: DateTimeUtc,
 }
 
 impl PlayersArchives {
-    pub fn new() -> Self {
-        PlayersArchives {
-            players: vec![], // schema: Schema::new(vec![
-                             //     Field::new("archives", DataType::List(), )
-                             // ])
-        }
+    pub fn new(start_month: DateTimeUtc, end_month: DateTimeUtc) -> PyResult<Self> {
+        Ok(PlayersArchives {
+            players: vec![],
+            start_month,
+            end_month,
+        })
     }
 
     pub fn filter(&mut self) -> Self {
@@ -35,8 +32,13 @@ impl PlayersArchives {
     }
 }
 
-pub fn get_player_archives(client: &PyClient, players: Vec<String>) -> PyResult<PlayersArchives> {
-    let mut archives = PlayersArchives::new();
+pub fn get_player_archives(
+    client: &PyClient,
+    players: Vec<String>,
+    start_month: DateTimeUtc,
+    end_month: DateTimeUtc,
+) -> PyResult<PlayersArchives> {
+    let mut archives = PlayersArchives::new(start_month, end_month)?;
     for player in players {
         let path = format!("player/{}/games/archives", player);
         let url = format!("{}{}", super::OFFICIAL_CHESS_API_URL, path);

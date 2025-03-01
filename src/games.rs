@@ -1,17 +1,13 @@
+use dateparser::DateTimeUtc;
 use pyo3::exceptions::PyValueError;
 use pyo3::PyResult;
 
-pub fn validate_month_string(string: &str) -> PyResult<()> {
-    let char_4 = string.chars().nth(4).ok_or_else(|| {
+pub fn month_string_to_date(string: &str) -> PyResult<DateTimeUtc> {
+    let date = string.parse::<DateTimeUtc>().map_err(|err| {
         PyValueError::new_err(format!(
-            "Input date string {} was not long enough to be a valid date.",
-            string
+            "{} could not be parsed date to a date object.",
+            err
         ))
     })?;
-    if char_4 != '/' {
-        return Err(PyValueError::new_err(
-            "Fourth char of date string input was not '/'. This is not a validate format.",
-        ));
-    }
-    Ok(())
+    Ok(date)
 }
