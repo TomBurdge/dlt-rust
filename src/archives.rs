@@ -9,6 +9,38 @@ pub struct PlayerArchives {
     pub archives: Vec<String>,
 }
 
+impl PlayerArchives {
+    fn filter_months(
+        self,
+        start_month: DateTimeUtc,
+        end_month: DateTimeUtc,
+    ) -> PyResult<PlayerArchives> {
+        let archives = self
+            .archives
+            .into_iter()
+            .map(|s| {
+                let dt = s[6..].parse::<DateTimeUtc>().map_err(|err| {
+                    PyValueError::new_err(format!(
+                        "Response body of function could not be parsed to a date object: {}",
+                        err
+                    ))
+                })?;
+                Ok::<(std::string::String, DateTimeUtc), pyo3::PyErr>((s, dt))
+            })
+            .collect::<Result<Vec<(String, DateTimeUtc)>, _>>()?
+            .into_iter()
+            .filter_map(|(s, dt)| {
+                if start_month.0 <= dt.0 && dt.0 <= end_month.0 {
+                    Some(s)
+                } else {
+                    None
+                }
+            })
+            .collect();
+        Ok(PlayerArchives { archives })
+    }
+}
+
 #[derive(Debug)]
 pub struct PlayersArchives {
     pub players: Vec<PlayerArchives>,
@@ -30,29 +62,8 @@ impl PlayersArchives {
         })
     }
 
-    fn add_player_archive(&mut self, mut player: PlayerArchives) -> PyResult<()> {
-        player.archives = player
-            .archives
-            .into_iter()
-            .map(|s| {
-                let dt = s[6..].parse::<DateTimeUtc>().map_err(|err| {
-                    PyValueError::new_err(format!(
-                        "Response body of function could not be parsed to a date object: {}",
-                        err
-                    ))
-                })?;
-                Ok::<(std::string::String, DateTimeUtc), pyo3::PyErr>((s, dt))
-            })
-            .collect::<Result<Vec<(String, DateTimeUtc)>, _>>()?
-            .into_iter()
-            .filter_map(|(s, dt)| {
-                if self.start_month.0 <= dt.0 && dt.0 <= self.end_month.0 {
-                    Some(s)
-                } else {
-                    None
-                }
-            })
-            .collect();
+    fn add_player_archive(&mut self, player: PlayerArchives) -> PyResult<()> {
+        let player = player.filter_months(self.start_month.clone(), self.end_month.clone())?;
         self.players.push(player);
         Ok(())
     }
