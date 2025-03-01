@@ -26,5 +26,6 @@ build-backend = "maturin"
 [dependency-groups]
 dev = [
     "maturin[patchelf]>=1.8.2",
+    "mypy>=1.15.0",
     "pre-commit>=4.1.0",
 ]
