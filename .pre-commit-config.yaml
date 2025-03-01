@@ -33,7 +33,7 @@ repos:
     #   pass_filenames: false
     - id: export
       name: uv export
-      entry: uv export -o requirements.txt --no-hashes
+      entry: uv export -o requirements.txt --no-hashes --no-dev
       files: pyproject.toml|uv.lock|requirements.txt
       language: system
       pass_filenames: false
