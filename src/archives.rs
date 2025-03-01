@@ -12,9 +12,7 @@ pub struct PlayerArchives {
 #[derive(Debug)]
 pub struct PlayersArchives {
     pub players: Vec<PlayerArchives>,
-    #[allow(dead_code)]
     start_month: DateTimeUtc,
-    #[allow(dead_code)]
     end_month: DateTimeUtc,
 }
 
@@ -32,8 +30,31 @@ impl PlayersArchives {
         })
     }
 
-    pub fn filter(&mut self) -> Self {
-        todo!("Filter the dates with a date strings.")
+    fn add_player_archive(&mut self, mut player: PlayerArchives) -> PyResult<()> {
+        player.archives = player
+            .archives
+            .into_iter()
+            .map(|s| {
+                let dt = s[6..].parse::<DateTimeUtc>().map_err(|err| {
+                    PyValueError::new_err(format!(
+                        "Response body of function could not be parsed to a date object: {}",
+                        err
+                    ))
+                })?;
+                Ok::<(std::string::String, DateTimeUtc), pyo3::PyErr>((s, dt))
+            })
+            .collect::<Result<Vec<(String, DateTimeUtc)>, _>>()?
+            .into_iter()
+            .filter_map(|(s, dt)| {
+                if self.start_month.0 <= dt.0 && dt.0 <= self.end_month.0 {
+                    Some(s)
+                } else {
+                    None
+                }
+            })
+            .collect();
+        self.players.push(player);
+        Ok(())
     }
 }
 
@@ -51,7 +72,7 @@ pub fn get_player_archives(
         let res = serde_json::from_str::<PlayerArchives>(&res).map_err(|error| {
             PyValueError::new_err(format!("Error in parsing the payload {}", error))
         })?;
-        archives.players.push(res);
+        archives.add_player_archive(res)?;
     }
     Ok(archives)
 }
