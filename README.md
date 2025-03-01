@@ -33,8 +33,8 @@ These forms of checks are opt-in, via [Pydantic](https://github.com/pydantic/pyd
 
 # 3 Rust Plugin
 DLT offers "plugins"; custom ingestion [sources](https://dlthub.com/docs/dlt-ecosystem/verified-sources/) and [destinations](https://dlthub.com/docs/dlt-ecosystem/destinations/) which extend or replace DLT's existing in-built features.<br><br>
-Through pyo3, I have written a custom source in rust. This rust is a [re-implementation](http://rewriteitinrust.studiosi.es/img/rewrite_in_rust_1.jpg) of the [chess.com verified DLT source](https://dlthub.com/docs/dlt-ecosystem/verified-sources/chess).<br>
-Through this, we can compare the performance and features.
+Through pyo3, I have written a custom source in rust. This rust is a [re-implementation](http://rewriteitinrust.studiosi.es/img/rewrite_in_rust_1.jpg) of the [chess.com verified DLT source](https://dlthub.com/docs/dlt-ecosystem/verified-sources/chess).<br><br>
+Through this, we can compare performance and features.
 
 ## 3.1 Arrow: (nearly) Zero-Copy Rust-Python Data Transfer
 [DLT offers support for Arrow to sink data to its location and metadata via Apache Arrow](https://dlthub.com/blog/how-dlt-uses-apache-arrow). [Apache Arrow](https://arrow.apache.org/) is an in-memory format which allows for fast serialization to parquet files, and fast memory transfer between languages in a program with zero-copy.<br><br>
