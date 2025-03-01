@@ -20,6 +20,11 @@ pub struct PlayersArchives {
 
 impl PlayersArchives {
     pub fn new(start_month: DateTimeUtc, end_month: DateTimeUtc) -> PyResult<Self> {
+        if end_month.0 < start_month.0 {
+            return Err(PyValueError::new_err(
+                "End month cannot be later than start month.",
+            ));
+        }
         Ok(PlayersArchives {
             players: vec![],
             start_month,
