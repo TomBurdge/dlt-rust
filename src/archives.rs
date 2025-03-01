@@ -29,6 +29,10 @@ impl PlayersArchives {
                              // ])
         }
     }
+
+    pub fn filter(&mut self) -> Self {
+        todo!("Filter the dates with a date strings.")
+    }
 }
 
 pub fn get_player_archives(client: &PyClient, players: Vec<String>) -> PyResult<PlayersArchives> {
