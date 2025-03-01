@@ -8,7 +8,10 @@ from typing import Optional
 
 @dlt.source(name="chess")
 def source(
-    client: PyClient, players: List[str], start_month: str = None, end_month: str = None
+    client: PyClient,
+    players: List[str],
+    start_month: Optional[str] = None,
+    end_month: Optional[str] = None,
 ) -> Sequence[DltResource]:
     """
     A dlt source for the chess.com api. It groups several resources (in this case chess.com API endpoints) containing
