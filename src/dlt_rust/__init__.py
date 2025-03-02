@@ -50,12 +50,9 @@ def players_games(
     start_month: Optional[str] = None,
     end_month: Optional[str] = None,
 ) -> pa.Table:
-    get_player_games(
+    yield get_player_games(
         client=client, players=players, start_month=start_month, end_month=end_month
     )
-    raise NotImplementedError("Rust function is in progress!")
-
-    # yield games(players=players, start_month=start_month, end_month=end_month)
 
 
 def load_players_games_example(start_month: str, end_month: str) -> None:
