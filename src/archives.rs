@@ -19,7 +19,9 @@ impl PlayerArchives {
             .archives
             .into_iter()
             .map(|s| {
-                let dt = s[6..].parse::<DateTimeUtc>().map_err(|err| {
+                let mut dt = s[s.len().saturating_sub(7)..].to_string();
+                dt.push_str("/28");
+                let dt = dt.parse::<DateTimeUtc>().map_err(|err| {
                     PyValueError::new_err(format!(
                         "Response body of function could not be parsed to a date object: {}",
                         err
