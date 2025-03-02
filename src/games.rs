@@ -82,8 +82,15 @@ impl TryFrom<Games> for RecordBatch {
             Field::new("verified", DataType::Boolean, false),
             Field::new("league", DataType::Utf8, false),
         ]);
-        let mut decoder = ReaderBuilder::new(Arc::new(schema)).build_decoder().map_err(|error|PyException::new_err(format!("Error with formatting when conv when converting schema input to arrow schema: {}", error)))?;
-        decoder.serialize(&other.games).map_err(|error|PyException::new_err(format!("Error with serializing the payloads when conv when converting schema input to arrow schema: {}", error)))?;
+        let mut decoder = ReaderBuilder::new(Arc::new(schema))
+            .build_decoder()
+            .map_err(|error| {
+                PyException::new_err(format!(
+                    "Error with formatting when converting schema input to arrow schema: {}",
+                    error
+                ))
+            })?;
+        decoder.serialize(&other.games).map_err(|error|PyException::new_err(format!("Error with serializing the payloads when converting schema input to arrow schema: {}", error)))?;
         let batch = decoder
             .flush()
             .map_err(|error| {
