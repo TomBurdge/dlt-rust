@@ -10,6 +10,7 @@ mypy-extensions==1.0.0
 nodeenv==1.9.1
 patchelf==0.17.2.1
 platformdirs==4.3.6
+polars==1.24.0
 pre-commit==4.1.0
 pyyaml==6.0.2
 typing-extensions==4.12.2
