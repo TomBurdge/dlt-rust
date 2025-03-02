@@ -10,7 +10,7 @@ Ingest data from an API with Data Load Tool (DLT) via a rust pyo3 plugin.
 # 2 Motivation
 Although python is the industry-standard language of choice for many data engineering use cases, it often provides best performance when used as a wrapper for faster languages.
 DLT's python-native parallelism/concurrency will still be limited by Global Interpreter Lock (the GIL).<br><br>
-Defining the GIL in detail is beyond the scope of this README, but in short it is "a mutex (or a lock) that allows only one thread to hold the control of the Python interpreter." [*]((https://realpython.com/python-gil/))<br><br>
+Defining the GIL in detail is beyond the scope of this README, but in short it is "a mutex (or a lock) that allows only one thread to hold the control of the Python interpreter." [*](https://realpython.com/python-gil/)<br><br>
 The GIL is part of what makes python an accessible language, where users do not have to consider components of memory management that exist in other languages.
 With this comes trade-offs; the GIL limits [significantly limits the the performance gains](https://realpython.com/python-gil/#the-impact-on-multi-threaded-python-programs) that can result from multi-threaded python-native code.<br><br>
 
