@@ -28,10 +28,11 @@ pub fn get_player_games(
     players: Vec<String>,
     start_month: String,
     end_month: String,
-) -> PyResult<()> {
+) -> PyResult<PyArrowType<RecordBatch>> {
     let start_month = games::month_string_to_date(&start_month)?;
     let end_month = games::month_string_to_date(&end_month)?;
     let archives = archives::get_player_archives(client, players, start_month, end_month)?;
-    let _games = games::Games::new(client, archives);
-    Ok(())
+    let games = games::Games::new(client, archives)?;
+    let res = games.try_into()?;
+    Ok(PyArrowType(res))
 }
