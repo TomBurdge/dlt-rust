@@ -18,7 +18,7 @@ def load_players_games_example(start_month: str, end_month: str) -> None:
         end_month=end_month,
     )
     # load the "players_games" and "players_profiles" out of all the possible resources
-    info = pipeline.run(data.with_resources("players_profiles"))
+    info = pipeline.run(data.with_resources("players_profiles", "players_games"))
     print(info)
 
 
@@ -32,4 +32,4 @@ def load_players_games_incrementally() -> None:
 
 if __name__ == "__main__":
     # run our main example
-    load_players_games_example("2022/11", "2022/12")
+    load_players_games_example("2021/01", "2022/12")

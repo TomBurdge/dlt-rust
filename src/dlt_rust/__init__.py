@@ -43,7 +43,7 @@ def players_profiles(client: PyClient, players: List[str]) -> pa.Table:
     yield res
 
 
-@dlt.resource(write_disposition="append")
+@dlt.resource(write_disposition="replace")
 def players_games(
     client: PyClient,
     players: List[str],
@@ -79,5 +79,5 @@ def load_players_games_example(start_month: str, end_month: str) -> None:
     )
     # load the "players_games" and "players_profiles" out of all the possible resources
     # info = pipeline.run(data.with_resources("players_games", "players_profiles"))
-    info = pipeline.run(data.with_resources("players_games"))
+    info = pipeline.run(data.with_resources("players_profiles", "players_games"))
     print(info)
