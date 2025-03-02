@@ -20,7 +20,7 @@ impl PlayerArchives {
             .into_iter()
             .map(|s| {
                 let mut dt = s[s.len().saturating_sub(7)..].to_string();
-                dt.push_str("/28");
+                dt.push_str("/27");
                 let dt = dt.parse::<DateTimeUtc>().map_err(|err| {
                     PyValueError::new_err(format!(
                         "Response body of function could not be parsed to a date object: {}",
