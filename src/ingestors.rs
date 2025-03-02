@@ -6,16 +6,16 @@ use pyo3::pyfunction;
 use super::archives;
 use super::client::PyClient;
 use super::games;
-use super::records;
+use super::profiles;
 
 #[pyfunction]
 pub fn get_player_profiles(
     client: &PyClient,
     players: Vec<String>,
 ) -> PyResult<PyArrowType<RecordBatch>> {
-    let mut results = records::PlayerPayloads::new();
+    let mut results = profiles::PlayerProfiles::new();
     for player in players {
-        let player = records::get_player_profile(client, player)?;
+        let player = profiles::get_player_profile(client, player)?;
         results.push_payload(player);
     }
     let results = results.try_into()?;

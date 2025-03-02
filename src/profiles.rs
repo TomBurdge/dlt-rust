@@ -10,7 +10,7 @@ use std::sync::Arc;
 use super::client::PyClient;
 
 #[derive(Debug, Deserialize, Serialize)]
-pub struct PlayerPayload {
+pub struct PlayerProfile {
     avatar: String,
     player_id: i32,
     #[serde(rename = "@id")]
@@ -33,18 +33,18 @@ pub struct PlayerPayload {
     streaming_platforms: Vec<String>,
 }
 
-pub struct PlayerPayloads {
-    payloads: Vec<PlayerPayload>,
+pub struct PlayerProfiles {
+    payloads: Vec<PlayerProfile>,
     schema: Schema,
 }
 
-impl Default for PlayerPayloads {
+impl Default for PlayerProfiles {
     fn default() -> Self {
-        PlayerPayloads::new()
+        PlayerProfiles::new()
     }
 }
 
-impl PlayerPayloads {
+impl PlayerProfiles {
     pub fn new() -> Self {
         let schema = Schema::new(vec![
             Field::new("avatar", DataType::Utf8, false),
@@ -65,21 +65,21 @@ impl PlayerPayloads {
             Field::new("league", DataType::Utf8, false),
         ]);
 
-        PlayerPayloads {
+        PlayerProfiles {
             payloads: vec![],
             schema,
         }
     }
 
-    pub fn push_payload(&mut self, payload: PlayerPayload) {
+    pub fn push_payload(&mut self, payload: PlayerProfile) {
         self.payloads.push(payload)
     }
 }
 
-impl TryFrom<PlayerPayloads> for RecordBatch {
+impl TryFrom<PlayerProfiles> for RecordBatch {
     type Error = PyErr;
 
-    fn try_from(other: PlayerPayloads) -> Result<Self, Self::Error> {
+    fn try_from(other: PlayerProfiles) -> Result<Self, Self::Error> {
         let mut decoder = ReaderBuilder::new(Arc::new(other.schema)).build_decoder().map_err(|error|PyException::new_err(format!("Error with formatting when conv when converting schema input to arrow schema: {}", error)))?;
         decoder.serialize(&other.payloads).map_err(|error|PyException::new_err(format!("Error with serializing the payloads when conv when converting schema input to arrow schema: {}", error)))?;
         let batch = decoder
@@ -92,11 +92,11 @@ impl TryFrom<PlayerPayloads> for RecordBatch {
     }
 }
 
-pub fn get_player_profile(client: &PyClient, username: String) -> PyResult<PlayerPayload> {
+pub fn get_player_profile(client: &PyClient, username: String) -> PyResult<PlayerProfile> {
     let path = format!("player/{}", username);
     let url = format!("{}{}", super::OFFICIAL_CHESS_API_URL, path);
     let res = client.get_url(&url)?;
-    let payload = serde_json::from_str::<PlayerPayload>(&res).map_err(|error| {
+    let payload = serde_json::from_str::<PlayerProfile>(&res).map_err(|error| {
         PyValueError::new_err(format!("Error in parsing the payload {}", error))
     })?;
     Ok(payload)

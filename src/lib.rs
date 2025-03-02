@@ -9,7 +9,7 @@ pub mod archives;
 pub mod client;
 pub mod games;
 pub mod ingestors;
-pub mod records;
+pub mod profiles;
 
 const OFFICIAL_CHESS_API_URL: &str = "https://api.chess.com/pub/";
 
