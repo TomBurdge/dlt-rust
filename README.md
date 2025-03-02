@@ -18,14 +18,14 @@ Rust is a system levels language, which gives the user significantly greater con
 Partially as a result of this greater control: "fearless concurrency"[*](https://doc.rust-lang.org/book/ch16-00-concurrency.html) and [user-brought async runtimes](https://doc.rust-lang.org/book/ch17-00-async-await.html).
 
 Components of ingestion benefit from asynchronicity: a common data ingestion use-case involves multiple calls to a single API endpoint with different headers.<br>
-Making these calls at the same time/within quick succession, while cohering to an endpoint's rate limits, offers performance benefits.<br><br>
+Making these calls at the same time/within quick succession, while cohering to an endpoint's rate limits, offers potential performance benefits.<br><br>
 
 ## 2.1 Additional Benefits
 [Data contracts](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/scenarios/cloud-scale-analytics/architectures/data-contracts) is a popular concept within data engineering: variously implicit/explicit commitments/agreements between a data consumer/sender for data availability and correctness.<br><br>
 
 Detailed comments on data contracts are beyond the scope of this README, but the hype around the idea has struggled to gain the same traction in industry practice.<br><br>
 
-Nonetheless, in the data ingestor-supplier relationship does involve implicit roles and responsibilities, which are weighted on the data supplier. For example, a data ingestor can reasonably expect that a data supplier provide well-structured data whose form does not change without due warning.<br><br>
+Nonetheless, the data ingestor-supplier relationship does involve implicit roles and responsibilities, which are weighted on the data supplier. For example, a data ingestor can reasonably expect that a data supplier provide well-structured data whose form does not change without due warning.<br><br>
 
 DLT offers what it calls ["schema and data contracts"](https://dlthub.com/docs/general-usage/schema-contracts) for schema validation and custom DQ checks. Impressively, [partial schema evolution](https://dlthub.com/docs/general-usage/schema-evolution) is also supported.<br><br>
 
