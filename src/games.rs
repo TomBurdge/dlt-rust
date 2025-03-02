@@ -27,9 +27,43 @@ impl Games {
     }
 }
 
+// DUCKDB existing schema:
+// ┌───────────────────┬──────────────────────────┬─────────┬─────────┬─────────┬─────────┐
+// │    column_name    │       column_type        │  null   │   key   │ default │  extra  │
+// │      varchar      │         varchar          │ varchar │ varchar │ varchar │ varchar │
+// ├───────────────────┼──────────────────────────┼─────────┼─────────┼─────────┼─────────┤
+// │ end_time          │ TIMESTAMP WITH TIME ZONE │ YES     │ NULL    │ NULL    │ NULL    │
+// │ url               │ VARCHAR                  │ YES     │ NULL    │ NULL    │ NULL    │
+// │ pgn               │ VARCHAR                  │ YES     │ NULL    │ NULL    │ NULL    │
+// │ time_control      │ VARCHAR                  │ YES     │ NULL    │ NULL    │ NULL    │
+// │ rated             │ BOOLEAN                  │ YES     │ NULL    │ NULL    │ NULL    │
+// │ accuracies__white │ DOUBLE                   │ YES     │ NULL    │ NULL    │ NULL    │
+// │ accuracies__black │ DOUBLE                   │ YES     │ NULL    │ NULL    │ NULL    │
+// │ tcn               │ VARCHAR                  │ YES     │ NULL    │ NULL    │ NULL    │
+// │ uuid              │ VARCHAR                  │ YES     │ NULL    │ NULL    │ NULL    │
+// │ initial_setup     │ VARCHAR                  │ YES     │ NULL    │ NULL    │ NULL    │
+// │ fen               │ VARCHAR                  │ YES     │ NULL    │ NULL    │ NULL    │
+// │ time_class        │ VARCHAR                  │ YES     │ NULL    │ NULL    │ NULL    │
+// │ rules             │ VARCHAR                  │ YES     │ NULL    │ NULL    │ NULL    │
+// │ white__rating     │ BIGINT                   │ YES     │ NULL    │ NULL    │ NULL    │
+// │ white__result     │ VARCHAR                  │ YES     │ NULL    │ NULL    │ NULL    │
+// │ white__aid        │ VARCHAR                  │ YES     │ NULL    │ NULL    │ NULL    │
+// │ white__username   │ VARCHAR                  │ YES     │ NULL    │ NULL    │ NULL    │
+// │ white__uuid       │ VARCHAR                  │ YES     │ NULL    │ NULL    │ NULL    │
+// │ black__rating     │ BIGINT                   │ YES     │ NULL    │ NULL    │ NULL    │
+// │ black__result     │ VARCHAR                  │ YES     │ NULL    │ NULL    │ NULL    │
+// │ black__aid        │ VARCHAR                  │ YES     │ NULL    │ NULL    │ NULL    │
+// │ black__username   │ VARCHAR                  │ YES     │ NULL    │ NULL    │ NULL    │
+// │ black__uuid       │ VARCHAR                  │ YES     │ NULL    │ NULL    │ NULL    │
+// │ eco               │ VARCHAR                  │ YES     │ NULL    │ NULL    │ NULL    │
+// │ _dlt_load_id      │ VARCHAR                  │ NO      │ NULL    │ NULL    │ NULL    │
+// │ _dlt_id           │ VARCHAR                  │ NO      │ NULL    │ NULL    │ NULL    │
+// ├───────────────────┴──────────────────────────┴─────────┴─────────┴─────────┴─────────┤
+// │ 26 rows                                                                    6 columns │
 #[derive(Deserialize, Serialize, Debug)]
 struct Game {
     url: String,
+    pgn: String,
     time_control: String,
     end_time: i64,
     rated: bool,
