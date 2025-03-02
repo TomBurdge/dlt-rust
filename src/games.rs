@@ -1,6 +1,6 @@
 use arrow::array::RecordBatch;
 use arrow_json::reader::ReaderBuilder;
-use arrow_schema::{DataType, Field, Schema};
+use arrow_schema::{DataType, Field, Fields, Schema};
 use dateparser::DateTimeUtc;
 use pyo3::exceptions::PyException;
 use pyo3::exceptions::PyValueError;
@@ -64,23 +64,33 @@ impl TryFrom<Games> for RecordBatch {
         // │ _dlt_id           │ VARCHAR                  │ NO      │ NULL    │ NULL    │ NULL    │
         // ├───────────────────┴──────────────────────────┴─────────┴─────────┴─────────┴─────────┤
         // │ 26 rows                                                                    6 columns │
-        let schema = Schema::new(vec![
-            Field::new("avatar", DataType::Utf8, false),
-            Field::new("player_id", DataType::Int32, false),
+        let accuracies = Fields::from(vec![
+            Field::new("white", DataType::Float32, true),
+            Field::new("black", DataType::Float32, true),
+        ]);
+        let side = Fields::from(vec![
+            Field::new("rating", DataType::Int32, false),
+            Field::new("result", DataType::Utf8, false),
             Field::new("@id", DataType::Utf8, false),
-            Field::new("url", DataType::Utf8, true),
-            Field::new("name", DataType::Utf8, false),
             Field::new("username", DataType::Utf8, false),
-            Field::new("title", DataType::Utf8, true),
-            Field::new("followers", DataType::Int32, false),
-            Field::new("country", DataType::Utf8, false),
-            Field::new("location", DataType::Utf8, false),
-            Field::new("last_online", DataType::Int64, false),
-            Field::new("joined", DataType::Int64, false),
-            Field::new("status", DataType::Utf8, false),
-            Field::new("is_streamer", DataType::Boolean, false),
-            Field::new("verified", DataType::Boolean, false),
-            Field::new("league", DataType::Utf8, false),
+            Field::new("uuid", DataType::Utf8, false),
+        ]);
+        let schema = Schema::new(vec![
+            Field::new("end_time", DataType::Int64, false),
+            Field::new("url", DataType::Utf8, true),
+            Field::new("pgn", DataType::Utf8, true),
+            Field::new("time_control", DataType::Utf8, false),
+            Field::new("rated", DataType::Boolean, false),
+            Field::new("tcn", DataType::Utf8, false),
+            Field::new("uuid", DataType::Utf8, false),
+            Field::new("initial_setup", DataType::Utf8, false),
+            Field::new("fen", DataType::Utf8, false),
+            Field::new("time_class", DataType::Utf8, false),
+            Field::new("rules", DataType::Utf8, false),
+            Field::new("eco", DataType::Utf8, false),
+            Field::new("accuracies", DataType::Struct(accuracies), true),
+            Field::new("white", DataType::Struct(side.clone()), false),
+            Field::new("black", DataType::Struct(side), false),
         ]);
         let mut decoder = ReaderBuilder::new(Arc::new(schema))
             .build_decoder()
@@ -128,6 +138,7 @@ struct Game {
     time_control: String,
     end_time: i64,
     rated: bool,
+    fen: String,
     accuracies: Option<Accuracies>,
     tcn: String,
     uuid: String,
