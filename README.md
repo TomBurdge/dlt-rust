@@ -1,3 +1,27 @@
+# Archive Note: This Repository was Archived on 29/06/2025
+This was a fun experiment, which helped me to learn and understand rust inter-op with python.
+
+### The Facts
+* Re-factored rust speedup was marginal in terms of speedup over dlt's already very well optimised code.
+* Reason: API Ingestion's bottleneck is I/O, and the rust code is not async.
+* Re-factoring the rust code is not too hard (it would have been easier to write it async first, but In have [refactored a crate from sync to async before](https://github.com/maxwellflitton/dockpack/pull/11).
+* 
+### Project learning outcomes:
+1. Even if the rust code were async, this still might not have solved a problem:
+  * [Async PyO3](https://github.com/PyO3/pyo3-async-runtimes) is not pro-actively maintained, and compounds the existing issues with pyo3 (magic macros which are really hard to debug when they fail, and can lead to super long compile times).
+  * Even async pyo3/rust inter-op is limited by the (infamous) python gil.
+  * An alternative might be to make the inter-opping functions create and complete their own runtimes, which could have performance implications.
+  * Some of dlt's core code architecture (it's either concurrent or async for multiple sources, but definitely async within a source for remote APIs) could compound this gil limitation by limiting the rust asynchronicity.
+* The performance questions could therefore only be answered with a decent amount of iteration and some proper code profiling; beyond the scope of an exploratory project.
+
+2. If rust could lead to a faster ingestion pipeline, it would be a different style of pipeline from an ingestion pipeline.
+* In particular, rust's approach to serialization/deserialization (not necessarily correct but how I think of it: inputs to rust types and rust types to outputs) is very strict in the most common crate `serde`, whereas DLT prides itself on flexibility for schema evolution (which is frustratingly unavoidable in ingestion/data engineering).
+* Some macro magic could get around this, but their are tradeoffs there too (maintainability/accessibility/readability/potential for bug frequency).
+
+3. Last: DLT's integration with arrow is lovely. It means that the core python DLT library is already about as performant as one could hope for in python.
+
+Thankfull, you don't always need to produce great, working software to learn something. :)
+
 # dlt-rust
 Ingest data from an API with Data Load Tool (DLT) via a rust pyo3 plugin.
 
